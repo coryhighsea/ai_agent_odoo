@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="ai_agent_odoo.AIAgentForm" owl="1">
+        <div class="o_ai_agent">
+            <div class="o_ai_agent_button" t-on-click="toggleChat">
+                <i class="fa fa-robot"/>
+            </div>
+            <div t-if="state.isOpen" class="o_ai_agent_chat">
+                <div class="o_chat_header">
+                    <span>AI Assistant</span>
+                    <i class="fa fa-times o_close_button" t-on-click="toggleChat"/>
+                </div>
+                <div class="o_chat_container">
+                    <t t-foreach="state.messages" t-as="message" t-key="message_index">
+                        <div t-attf-class="o_message #{message.isUser ? 'o_user_message' : 'o_ai_message'}">
+                            <div class="o_message_content">
+                                <t t-esc="message.content"/>
+                            </div>
+                        </div>
+                    </t>
+                    <div t-if="state.isLoading" class="o_loading_indicator">
+                        <i class="fa fa-spinner fa-spin"/>
+                    </div>
+                </div>
+                <div class="o_chat_input">
+                    <textarea 
+                        t-model="state.inputMessage"
+                        t-on-keydown="handleKeyPress"
+                        placeholder="Type your message..."
+                        rows="1"
+                    />
+                    <button 
+                        t-on-click="sendMessage"
+                        t-att-disabled="!state.inputMessage.trim() || state.isLoading"
+                    >
+                        <i class="fa fa-paper-plane"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates> 
